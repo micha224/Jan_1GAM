@@ -63,7 +63,7 @@ public class Stats : Photon.MonoBehaviour {
 		if(other.transform.CompareTag("Bullet"))
 		{	
 			Destroy(other.gameObject);
-			this.photonView.RPC("Damage", PhotonTargets.All, 15);
+			this.photonView.RPC("Damage", PhotonNetwork.player, 15);
 		}
 		if(other.transform.CompareTag("Sword"))
 		{
@@ -108,17 +108,17 @@ public class Stats : Photon.MonoBehaviour {
     void Damage(int dmg, PhotonMessageInfo info)
     {
 			Debug.Log("Damage recieved.");
-	        Health -= dmg;
+	        this.Health -= dmg;
 	
-	        if (Health <= 0)
+	        if (this.Health <= 0)
 	        {
-	            Lives -= 1;
-	            Health = PlayerPrefs.GetInt("Health");
-				count = Random.Range(0,_gamesystem.SpwanPoint.Length);
-				_position = _gamesystem.SpwanPoint[count].transform.position;
+	            this.Lives -= 1;
+	            this.Health = PlayerPrefs.GetInt("Health");
+				this.count = Random.Range(0,_gamesystem.SpwanPoint.Length);
+				this._position = _gamesystem.SpwanPoint[count].transform.position;
 				info.photonView.transform.position = _position;
 	        }
-	        if (Lives <= 0)
+	        if (this.Lives <= 0)
 	        {
 				if(!this.death)
 				{

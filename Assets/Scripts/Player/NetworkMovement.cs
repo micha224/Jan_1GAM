@@ -8,14 +8,12 @@ public class NetworkMovement : Photon.MonoBehaviour {
     private Quaternion correctPlayerRot = Quaternion.identity; //We lerp towards this
 	private int health = 0;
 	private int lives = 0;
-	private GameSystem _gameSystem;
-    ControllerPlayer controllerScript;
-	Stats statsScript;
+	
 	// Use this for initialization
 	void Awake () {
-		_gameSystem = GameObject.Find("_System").GetComponent<GameSystem>();
-        controllerScript = GetComponent<ControllerPlayer>();
-		statsScript = GetComponent<Stats>();
+		GameSystem _gameSystem = GameObject.Find("_System").GetComponent<GameSystem>();
+        ControllerPlayer controllerScript = GetComponent<ControllerPlayer>();
+		Stats statsScript = GetComponent<Stats>();
 
         if (photonView.isMine)
         {
@@ -40,22 +38,28 @@ public class NetworkMovement : Photon.MonoBehaviour {
             //We own this player: send the others our data
             stream.SendNext(transform.position);
             stream.SendNext(transform.rotation);
-			//stream.SendNext(statsScript.Health);
-			//stream.SendNext(statsScript.Lives);
+			
+			Stats statsScript = GetComponent<Stats>();
+			stream.SendNext(statsScript.Health);
+			stream.SendNext(statsScript.Lives);
         }
         else
         {
             //Network player, receive data
-            correctPlayerPos = (Vector3)stream.ReceiveNext();
-            correctPlayerRot = (Quaternion)stream.ReceiveNext();
-			//health = (int)stream.ReceiveNext();
-			//lives = (int)stream.ReceiveNext();
+            this.correctPlayerPos = (Vector3)stream.ReceiveNext();
+            this.correctPlayerRot = (Quaternion)stream.ReceiveNext();
+			
+			Stats statsScript = GetComponent<Stats>();
+			statsScript.Health = (int)stream.ReceiveNext();
+			statsScript.Lives = (int)stream.ReceiveNext();
         }
     }
 	// Update is called once per frame
 	void Update () {
 		if(photonView.isMine)
 		{
+			GameSystem _gameSystem = GameObject.Find("_System").GetComponent<GameSystem>();
+			ControllerPlayer controllerScript = GetComponent<ControllerPlayer>();
 			
 		  	if(_gameSystem.GameOpen)
 			{
@@ -66,6 +70,5 @@ public class NetworkMovement : Photon.MonoBehaviour {
 				controllerScript.InControl = true;
 			}
 		}
-	
 	}
 }
