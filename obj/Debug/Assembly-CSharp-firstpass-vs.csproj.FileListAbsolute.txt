@@ -1,0 +1,12 @@
+C:\Users\Micha\Documents\Jan_1GAM\Temp\bin\Debug\Assembly-CSharp-firstpass.dll
+C:\Users\Micha\Documents\Jan_1GAM\Temp\bin\Debug\Assembly-CSharp-firstpass.pdb
+C:\Users\Micha\Documents\Jan_1GAM\Temp\bin\Debug\Photon3Unity3D.dll
+C:\Users\Micha\Documents\Jan_1GAM\Temp\bin\Debug\UnityEditor.dll
+C:\Users\Micha\Documents\Jan_1GAM\Temp\bin\Debug\UnityEngine.dll
+C:\Users\Micha\Documents\Jan_1GAM\Temp\bin\Debug\Mono.Cecil.dll
+C:\Users\Micha\Documents\Jan_1GAM\Temp\bin\Debug\nunit.framework.dll
+C:\Users\Micha\Documents\Jan_1GAM\Temp\bin\Debug\ICSharpCode.NRefactory.dll
+C:\Users\Micha\Documents\Jan_1GAM\Temp\bin\Debug\Photon3Unity3D.xml
+C:\Users\Micha\Documents\Jan_1GAM\obj\Debug\Assembly-CSharp-firstpass-vs.csprojResolveAssemblyReference.cache
+C:\Users\Micha\Documents\Jan_1GAM\obj\Debug\Assembly-CSharp-firstpass.dll
+C:\Users\Micha\Documents\Jan_1GAM\obj\Debug\Assembly-CSharp-firstpass.pdb

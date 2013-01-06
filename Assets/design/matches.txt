@@ -1,0 +1,10 @@
+Description:
+5 min matches.
+special attacks have cooldown.
+ffa:
+	start of game:
+		able to choose how many lives each player has.
+		able to choose how many health each player has.
+	game:
+		able to knock each other of the map.
+		you win if you are the last one alive.

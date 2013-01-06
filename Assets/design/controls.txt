@@ -1,0 +1,6 @@
+Controls:
+W/space = jump
+a/d = walk/run left or right
+1/2/3 = setting a special attack
+left mouse = normal attack
+right mouse = special attack
