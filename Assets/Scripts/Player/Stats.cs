@@ -14,6 +14,7 @@ public class Stats : Photon.MonoBehaviour {
 	private int count;
 	private Vector3 _position;
 	private GameSystem _gamesystem;
+	private bool Damaged = false;
 
 	// Use this for initialization
 	void Start () {
@@ -31,6 +32,11 @@ public class Stats : Photon.MonoBehaviour {
 			if(Input.GetKeyDown("k") && this.Health > 0)
 			{
 				this.photonView.RPC("Damage", PhotonTargets.All, Health);
+			}
+			if(Damaged)
+			{
+				this.photonView.RPC("Damage", PhotonTargets.All, 15);
+				Damaged = false;
 			}
 		}
 	
@@ -63,7 +69,7 @@ public class Stats : Photon.MonoBehaviour {
 		if(other.transform.CompareTag("Bullet"))
 		{	
 			Destroy(other.gameObject);
-			this.photonView.RPC("Damage", PhotonNetwork.player, 15);
+			Damaged = true;
 		}
 		if(other.transform.CompareTag("Sword"))
 		{

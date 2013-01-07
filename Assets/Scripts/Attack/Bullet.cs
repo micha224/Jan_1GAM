@@ -24,13 +24,14 @@ public class Bullet : MonoBehaviour {
 	{
 		this.rigidbody.AddForce(_mousePosition * BulletSpeed);
 	}
-	
+
 	void OnCollisionEnter(Collision other)
 	{
-		if(other.transform.tag == "Player"){}
-		else
+		if(other.collider.transform.tag == "Player"){}
+		else if(other.collider.transform.tag != "Player")
 		{
 			Destroy(this.gameObject);
 		}
 	}
+	
 }

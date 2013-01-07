@@ -9,7 +9,7 @@ public class Attack_Gun : Photon.MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-		this.transform.collider.isTrigger = true;
+		//this.transform.collider.isTrigger = true;
 	}
 	
 	// Update is called once per frame
