@@ -93,20 +93,26 @@ public class EndOfGame : Photon.MonoBehaviour {
 		_gamesystem._CountDownTimer = false;
         if (TimeUp)
         {
-            PhotonView vp = Players[PlayerWithMostLives].GetComponent<PhotonView>();
-            Debug.Log("Time's up");
-            Debug.Log("Winner is:" + vp.owner.name);
-			WinnerAnnounced = true;
-			WinnerName = vp.owner.name;
+			if(!WinnerAnnounced)
+			{
+	            PhotonView vp = Players[PlayerWithMostLives].GetComponent<PhotonView>();
+	            Debug.Log("Time's up");
+	            Debug.Log("Winner is:" + vp.owner.name);
+				WinnerAnnounced = true;
+				WinnerName = vp.owner.name;
+			}
 			
         }
         else if (MaxDead)
         {
-			PhotonView vp = Players[PlayerWithMostLives].GetComponent<PhotonView>();
-            Debug.Log("4 Deaths");
-            Debug.Log("Winner is:" + vp.owner.name);
-			this.WinnerAnnounced = true;
-			this.WinnerName = vp.owner.name;
+			if(!WinnerAnnounced)
+			{
+				PhotonView vp = Players[PlayerWithMostLives].GetComponent<PhotonView>();
+	            Debug.Log("4 Deaths");
+	            Debug.Log("Winner is:" + vp.owner.name);
+				this.WinnerAnnounced = true;
+				this.WinnerName = vp.owner.name;
+			}
         }
         
     }
