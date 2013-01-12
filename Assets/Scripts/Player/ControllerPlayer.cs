@@ -87,18 +87,5 @@ public class ControllerPlayer : MonoBehaviour {
 		Debug.Log("Trigger true");
 		//this.animation.Play("Death");
 		Destroy(this.GetComponent<CharacterController>());
-	}
-	
-	[RPC]
-	void AttackAnimation(PhotonMessageInfo info)
-	{
-		if(this.name.Contains("Sword"))
-		{
-			this.transform.GetChild(0).GetComponent<Attack_Sword>().AttackAnimation();
-		}
-		else if(this.name.Contains("Gunner"))
-		{
-			this.transform.GetChild(0).GetComponent<Attack_Gun>().AttackInstantiate();
-		}
-	}
+	}	
 }

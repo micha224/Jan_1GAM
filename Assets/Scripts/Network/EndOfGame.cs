@@ -14,6 +14,9 @@ public class EndOfGame : Photon.MonoBehaviour {
 	public GUIStyle WinnerStyle;
 	public GUIStyle WinnerNameStyle;
 	private GameSystem _gamesystem;
+	private string death_name;
+	private bool deathcounter = false;
+	public GUIStyle DeathDisplay;
 	
 	
 	// Use this for initialization
@@ -50,6 +53,14 @@ public class EndOfGame : Photon.MonoBehaviour {
 		}
 		else
 		{
+			if(deathcounter)
+			{
+				GUILayout.BeginArea(new Rect(Screen.width / 2 - 200, Screen.height / 2 - 130, 400, 40));
+				
+				GUILayout.Label(death_name +" went to heaven.", DeathDisplay);
+				
+				GUILayout.EndArea();
+			}
 			
 		}
 	}
@@ -82,39 +93,35 @@ public class EndOfGame : Photon.MonoBehaviour {
     [RPC]
     void End(bool TimeUp, bool MaxDead, PhotonMessageInfo info)
     {
-        Players = GameObject.FindGameObjectsWithTag("Player");
-        Lives= new int[Players.Length];
-        for (int i = 0; i < Players.Length; i++)
-        {
-            Stats _stats = Players[i].GetComponent<Stats>();
-            Lives[i] = _stats.Lives;
-        }
-        LargestNumber(Lives);
-		_gamesystem._CountDownTimer = false;
-        if (TimeUp)
-        {
-			if(!WinnerAnnounced)
-			{
-	            PhotonView vp = Players[PlayerWithMostLives].GetComponent<PhotonView>();
-	            Debug.Log("Time's up");
-	            Debug.Log("Winner is:" + vp.owner.name);
-				WinnerAnnounced = true;
-				WinnerName = vp.owner.name;
-			}
-			
-        }
-        else if (MaxDead)
-        {
-			if(!WinnerAnnounced)
-			{
-				PhotonView vp = Players[PlayerWithMostLives].GetComponent<PhotonView>();
-	            Debug.Log("4 Deaths");
-	            Debug.Log("Winner is:" + vp.owner.name);
-				this.WinnerAnnounced = true;
-				this.WinnerName = vp.owner.name;
-			}
-        }
-        
+		if(!WinnerAnnounced)
+		{
+			Players = GameObject.FindGameObjectsWithTag("Player");
+			Lives= new int[Players.Length];
+			for (int i = 0; i < Players.Length; i++)
+		    {
+		    	Stats _stats = Players[i].GetComponent<Stats>();
+		    	Lives[i] = _stats.Lives;
+		    }
+		    LargestNumber(Lives);
+			_gamesystem._CountDownTimer = false;
+		    if (TimeUp)
+		    {
+			            PhotonView vp = Players[PlayerWithMostLives].GetComponent<PhotonView>();
+			            Debug.Log("Time's up");
+			            Debug.Log("Winner is:" + vp.owner.name);
+						WinnerAnnounced = true;
+						WinnerName = vp.owner.name;
+					
+		    }
+		    else if (MaxDead)
+		    {
+					PhotonView vp = Players[PlayerWithMostLives].GetComponent<PhotonView>();
+			    	Debug.Log("4 Deaths");
+			     	Debug.Log("Winner is:" + vp.owner.name);
+					this.WinnerAnnounced = true;
+					this.WinnerName = vp.owner.name;
+		   	}
+		}
     }
 
     [RPC]
@@ -122,10 +129,20 @@ public class EndOfGame : Photon.MonoBehaviour {
     {
         Debug.Log(info.sender.name + " died.");
         Deaths += 1;
-
+		death_name = info.sender.name;
+		StartCoroutine(DeathMessage());
+		
         if (Deaths == Players.Length -1)
         {
             this.photonView.RPC("End", PhotonTargets.All, false, true);
 		}
     }
+	
+	IEnumerator DeathMessage()
+	{
+		deathcounter = true;
+		yield return new WaitForSeconds(1);
+		deathcounter = false;
+		
+	}
 }

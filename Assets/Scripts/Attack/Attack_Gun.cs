@@ -6,6 +6,8 @@ public class Attack_Gun : Photon.MonoBehaviour {
 	public bool Attacking = false;
 	public ControllerPlayer controller;
 	public GameObject BulletPrefab;
+	public int BulletSpeed;
+	public Vector3 _mousePosition;
 	
 	// Use this for initialization
 	void Start () {
@@ -24,11 +26,19 @@ public class Attack_Gun : Photon.MonoBehaviour {
 			//{
 			//	this.Attacking = false;	
 			//}
+			if(Input.mousePosition.x < Screen.width/2)
+			{
+				_mousePosition = this.transform.right;	
+			}
+			else if(Input.mousePosition.x > Screen.width/2)
+			{
+				_mousePosition = this.transform.right;	
+			}
 			if(!this.Attacking)
 			{
 				if(Input.GetButtonDown("Fire1"))
 				{
-					this.transform.parent.GetComponent<PhotonView>().RPC("AttackAnimation", PhotonTargets.All);
+					this.transform.GetComponent<PhotonView>().RPC("AttackInstantiate", PhotonTargets.All, _mousePosition);
 					this.Attacking = true;
 					StartCoroutine(ReloadTime());
 				}
@@ -59,11 +69,12 @@ public class Attack_Gun : Photon.MonoBehaviour {
 		}
 	}
 	*/
-    public void AttackInstantiate()
+	[RPC]
+    public void AttackInstantiate(Vector3 direction)
     {
 		Debug.Log("Attack");
 		GameObject bullet = GameObject.Instantiate(BulletPrefab, this.transform.position, Quaternion.identity) as GameObject;
-		//bullet.transform.parent = this.transform;
+		bullet.rigidbody.AddForce(direction * BulletSpeed);
     }
 	
 	IEnumerator ReloadTime()

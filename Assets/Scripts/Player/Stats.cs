@@ -66,6 +66,7 @@ public class Stats : Photon.MonoBehaviour {
 	*/
 	void OnCollisionEnter(Collision other)
 	{
+		Debug.Log(this.photonView.owner.name +"Got Hit");
 		if(other.transform.CompareTag("Bullet"))
 		{	
 			Destroy(other.gameObject);
@@ -76,7 +77,7 @@ public class Stats : Photon.MonoBehaviour {
 			Attack_Sword sword = other.collider.GetComponent<Attack_Sword>();
 			if(sword.Attacking)
 			{
-				this.photonView.RPC("Damage", PhotonTargets.All, 15);
+				this.photonView.RPC("Damage", PhotonTargets.All, 20);
 			}
 			else
 			{
