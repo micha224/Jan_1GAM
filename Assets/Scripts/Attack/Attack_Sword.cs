@@ -7,7 +7,7 @@ public class Attack_Sword : Photon.MonoBehaviour {
 	public ControllerPlayer controller;
 	// Use this for initialization
 	void Start () {
-		//this.transform.collider.isTrigger = true;
+		this.transform.collider.isTrigger = true;
 	}
 	
 	// Update is called once per frame
@@ -26,7 +26,7 @@ public class Attack_Sword : Photon.MonoBehaviour {
 			{
 				if(Input.GetButtonDown("Fire1"))
 				{
-					this.transform.parent.GetComponent<PhotonView>().RPC("AttackAnimation", PhotonTargets.All);
+					this.transform.GetComponent<PhotonView>().RPC("AttackAnimation", PhotonTargets.All);
 				}
 			}
 			if(Input.GetButtonDown("Fire2"))
@@ -40,20 +40,25 @@ public class Attack_Sword : Photon.MonoBehaviour {
 		}
 		
 	}
-	/*
+	
 	void OnTriggerEnter(Collider other)
 	{
 		if(this.Attacking)
 		{
+			Debug.Log("Got Hit");
 			if(other.tag == "Player")
 			{
-				SendHit(other);
+				other.GetComponent<Stats>().Damaged = true;
+				this.Attacking = false;
 			}	
 		}
 	}
-	*/
+	
+	
+	[RPC]
     public void AttackAnimation()
     {
+		this.Attacking = true;
 		Debug.Log("Attack");
         this.animation.Play("Attack");
     }

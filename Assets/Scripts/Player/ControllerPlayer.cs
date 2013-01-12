@@ -12,6 +12,7 @@ public class ControllerPlayer : MonoBehaviour {
     public float Gravity;
     private Vector3 moveDirection = Vector3.zero;
     public bool InControl = true;
+	private Vector3 _PlayerPos;
 
 	// Use this for initialization
 	void Start () {
@@ -33,11 +34,12 @@ public class ControllerPlayer : MonoBehaviour {
                 speed = RunSpeed;
             }
 			_MousePos = Input.mousePosition;
-			if(_MousePos.x < Screen.width/2)
+			_PlayerPos = Camera.main.WorldToScreenPoint(this.transform.position);
+			if(_MousePos.x < _PlayerPos.x)
 			{
 				transform.rotation = Quaternion.Euler(0, 180, 0);
 			}
-			else if (_MousePos.x > Screen.width/2)
+			else if (_MousePos.x > _PlayerPos.x || _MousePos.x == _PlayerPos.x)
 			{
 				transform.rotation = Quaternion.Euler(0,0,0);
 			}
@@ -47,11 +49,11 @@ public class ControllerPlayer : MonoBehaviour {
 				if (controller.isGrounded)
 	            {
 	           
-				if(_MousePos.x < Screen.width/2)
+				if(_MousePos.x < _PlayerPos.x)
 				{
 	                moveDirection = new Vector3(-Input.GetAxis("Horizontal"), 0, 0);
 				}
-				else if(_MousePos.x > Screen.width/2)
+				else if(_MousePos.x > _PlayerPos.x || _MousePos.x == _PlayerPos.x)
 				{
 					moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0, 0);
 				}

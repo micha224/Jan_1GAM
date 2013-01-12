@@ -70,5 +70,22 @@ public class NetworkMovement : Photon.MonoBehaviour {
 				controllerScript.InControl = true;
 			}
 		}
+		     if (!photonView.isMine)
+        {
+        	if(correctPlayerPos==Vector3.zero) return;
+        	
+            //Update remote player (smooth this, this looks good, at the cost of some accuracy)
+            if (Vector3.Distance(correctPlayerPos, transform.position) < 4)
+            {
+                transform.position = Vector3.Lerp(transform.position, correctPlayerPos, Time.deltaTime * 5);
+                transform.rotation = Quaternion.Lerp(transform.rotation, correctPlayerRot, Time.deltaTime * 5);
+            }
+            else
+            {
+                 transform.position =  correctPlayerPos;
+                 transform.rotation = correctPlayerRot;
+            }
+        }
 	}
+	
 }

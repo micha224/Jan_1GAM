@@ -14,7 +14,7 @@ public class Stats : Photon.MonoBehaviour {
 	private int count;
 	private Vector3 _position;
 	private GameSystem _gamesystem;
-	private bool Damaged = false;
+	public bool Damaged = false;
 
 	// Use this for initialization
 	void Start () {
@@ -72,7 +72,7 @@ public class Stats : Photon.MonoBehaviour {
 			Destroy(other.gameObject);
 			Damaged = true;
 		}
-		if(other.transform.CompareTag("Sword"))
+		/*if(other.transform.CompareTag("Sword"))
 		{
 			Attack_Sword sword = other.collider.GetComponent<Attack_Sword>();
 			if(sword.Attacking)
@@ -82,7 +82,7 @@ public class Stats : Photon.MonoBehaviour {
 			else
 			{
 			}
-		}
+		}*/
 	}
 	
     [RPC]

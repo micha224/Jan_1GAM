@@ -10,23 +10,35 @@ public class Chat : Photon.MonoBehaviour
     public static Chat SP;
     public List<string> messages = new List<string>();
 
-    private int chatHeight = (int)140;
+    private int chatHeight = (int)250;
+	private int chatwidth = 200;
     private Vector2 scrollPos = Vector2.zero;
     private string chatInput = "";
+	private GameSystem _gameSystem;
+	private EndOfGame _end;
 
     void Awake()
     {
+		_gameSystem = GameObject.Find("_System").GetComponent<GameSystem>();
+		_end = GameObject.Find("EndOfGame").GetComponent<EndOfGame>();
         SP = this;
     }
 
     void OnGUI()
     {
-        GUILayout.BeginArea(new Rect(0, Screen.height - chatHeight, Screen.width, chatHeight));
+		if(!_gameSystem.GameOpen)
+		{
+			if(!_end.WinnerAnnouncedGUI)
+			{
+				return;
+			}
+		}
+        GUILayout.BeginArea(new Rect(Screen.width- chatwidth, Screen.height - chatHeight, chatwidth, chatHeight));
         
         //Show scroll list of chat messages
-        scrollPos = GUILayout.BeginScrollView(scrollPos);
-        GUI.color = Color.black;
-        for (int i = messages.Count - 1; i >= 0; i--)
+        scrollPos = GUILayout.BeginScrollView(scrollPos, "box");
+        GUI.color = Color.white;
+        for (int i = 0; i <= messages.Count-1; i++)
         {
             GUILayout.Label(messages[i]);
         }
@@ -38,30 +50,21 @@ public class Chat : Photon.MonoBehaviour
 
         //Group target buttons
         GUILayout.BeginHorizontal();
-        GUI.color = Color.black; GUILayout.Label("Send to:", GUILayout.Width(60)); GUI.color = Color.white;
-        if (GUILayout.Button("ALL", GUILayout.Height(17)))
+		GUI.color = Color.white;
+        if (GUILayout.Button("Send", GUILayout.Height(17)))
+		{
             SendChat(PhotonTargets.All);
-        if (GUILayout.Button("ALLBUF", GUILayout.Height(17)))
-            SendChat(PhotonTargets.AllBuffered);
-        if (GUILayout.Button("OTHER", GUILayout.Height(17)))
-            SendChat(PhotonTargets.Others);
-        if (GUILayout.Button("OTHERBUF", GUILayout.Height(17)))
-            SendChat(PhotonTargets.OthersBuffered);
-        if (GUILayout.Button("MASTER", GUILayout.Height(17)))
-            SendChat(PhotonTargets.MasterClient);
+		}
+		if (Event.current.type == EventType.keyDown && Event.current.character == '\n') 
+		{
+			Debug.Log("ad");
+			SendChat(PhotonTargets.All);
+		}
         GUILayout.EndHorizontal();
-
-        //Player target buttons
-        GUILayout.BeginHorizontal();
-        GUI.color = Color.black; GUILayout.Label("Send to:", GUILayout.Width(60)); GUI.color = Color.white;
-        foreach (PhotonPlayer player in PhotonNetwork.playerList)
-            if (GUILayout.Button("" + player, GUILayout.MaxWidth(100), GUILayout.Height(17)))
-                SendChat(player);
-        GUILayout.EndHorizontal();
-
         GUILayout.EndArea();
     }
-
+	
+	
     public static void AddMessage(string text)
     {
         SP.messages.Add(text);

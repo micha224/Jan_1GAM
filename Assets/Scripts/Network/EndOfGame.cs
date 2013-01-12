@@ -9,7 +9,7 @@ public class EndOfGame : Photon.MonoBehaviour {
     private int PlayerWithMostLives;
     private GameObject[] Players;
 	private bool WinnerAnnounced = false;
-	private bool WinnerAnnouncedGUI = false;
+	public bool WinnerAnnouncedGUI = false;
 	private string WinnerName;
 	public GUIStyle WinnerStyle;
 	public GUIStyle WinnerNameStyle;
