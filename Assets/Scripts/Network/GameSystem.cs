@@ -342,6 +342,8 @@ public class GameSystem : Photon.MonoBehaviour
     [RPC]
     void StartGame()
     {
+		Animation _ani = GameObject.Find("platform").GetComponent<Animation>();
+		_ani.Play("Flying");
         GameOpen = false;
     }
 }
