@@ -1,8 +1,17 @@
 using UnityEngine;
 using System.Collections;
 
-public class ControllerPlayer : MonoBehaviour {
 	
+	public enum CharacterState
+{
+    Idle = 0,
+    Walking = 1,
+    Attacking = 2,
+    Running = 3,
+    Jumping = 4,
+}
+public class ControllerPlayer : MonoBehaviour {
+
 	private Vector2 _MousePos;
     public bool running = false;
     public float WalkSpeed;
@@ -13,6 +22,7 @@ public class ControllerPlayer : MonoBehaviour {
     private Vector3 moveDirection = Vector3.zero;
     public bool InControl = true;
 	private Vector3 _PlayerPos;
+	public CharacterState _characterState;
 
 	// Use this for initialization
 	void Start () {
@@ -71,6 +81,7 @@ public class ControllerPlayer : MonoBehaviour {
 	            }
 				if (Input.GetButtonUp("Running"))
 	            {
+					_characterState = CharacterState.Walking;
 	                running = false;
 	            }
 				if(this.transform.position.z != 0)
@@ -81,7 +92,32 @@ public class ControllerPlayer : MonoBehaviour {
 	            controller.Move(moveDirection * Time.deltaTime);
 			}
         }
+		if(this.transform.GetChild(0).GetComponent<Animation>())
+		{
+			//animation
+			if(_characterState == CharacterState.Walking)
+			{
+				this.transform.GetChild(0).animation.CrossFade("Walk");
+			}
+			else if(_characterState == CharacterState.Attacking)
+			{
+				this.transform.GetChild(0).animation.CrossFade("Attack");	
+			}
+		}
     }
+	
+	
+	[RPC]
+	void AttackAnimation(bool _bool, PhotonMessageInfo info)
+	{
+		if(_bool == false)
+		{
+			_characterState = CharacterState.Attacking;
+		}else if(_bool == true)
+		{
+			_characterState = CharacterState.Walking;
+		}
+	}
 	
 	[RPC]
 	void PlayDeath(PhotonMessageInfo info)

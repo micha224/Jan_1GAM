@@ -105,9 +105,9 @@ public class GameSystem : Photon.MonoBehaviour
                     PlayerPrefab = "Player_Gunner";
                 }
 
-                if (GUILayout.Button("Swordsman"))
+                if (GUILayout.Button("Runner"))
                 {
-                    PlayerPrefab = "Player_Swordsman";
+                    PlayerPrefab = "Player_Runner";
                 }
 
                 if (GUILayout.Button("Ready!"))

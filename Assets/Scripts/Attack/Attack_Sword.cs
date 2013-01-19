@@ -14,19 +14,21 @@ public class Attack_Sword : Photon.MonoBehaviour {
 	void Update () {
 		if(controller.InControl)
 		{
-			if(this.animation.IsPlaying("Attack"))
+			if(this.transform.parent.animation.IsPlaying("Attack"))
 			{
 				this.Attacking = true;
 			}
 			else
 			{
 				this.Attacking = false;	
+				controller._characterState = CharacterState.Walking;
 			}
 			if(!Attacking)
 			{
 				if(Input.GetButtonDown("Fire1"))
 				{
-					this.transform.GetComponent<PhotonView>().RPC("AttackAnimation", PhotonTargets.All);
+					this.transform.root.GetComponent<PhotonView>().RPC("AttackAnimation", PhotonTargets.All, false);
+					StartCoroutine(reload());
 				}
 			}
 			if(Input.GetButtonDown("Fire2"))
@@ -45,23 +47,29 @@ public class Attack_Sword : Photon.MonoBehaviour {
 	{
 		if(this.Attacking)
 		{
-			Debug.Log("Got Hit");
-			if(other.tag == "Player")
+			if(other.CompareTag("Player"))
 			{
-				other.GetComponent<Stats>().Damaged = true;
+				Debug.Log("Got Hit");
+				if(other.GetComponent<Stats>())
+				{
+					other.collider.GetComponent<PhotonView>().RPC("Damage", PhotonTargets.All, 5);
+					Debug.Log("ah");
+				}
 				this.Attacking = false;
+				//controller._characterState = CharacterState.Walking;
 			}	
 		}
 	}
 	
 	
-	[RPC]
-    public void AttackAnimation()
+	
+    IEnumerator reload()
     {
-		this.Attacking = true;
 		Debug.Log("Attack");
-        this.animation.Play("Attack");
-    }
+        yield return new WaitForSeconds(1);
+		this.transform.root.GetComponent<PhotonView>().RPC("AttackAnimation", PhotonTargets.All, true);
+		//controller._characterState = CharacterState.Walking;
+   }
 	
 	public void SendHit(Collider other)
 	{

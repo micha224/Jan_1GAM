@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-
+/*
 public enum CharacterState
 {
     Idle = 0,
@@ -8,10 +8,11 @@ public enum CharacterState
     Trotting = 2,
     Running = 3,
     Jumping = 4,
-}
+}*/
 
 public class ThirdPersonController : MonoBehaviour
 {
+	
 
     public AnimationClip idleAnimation;
     public AnimationClip walkAnimation;
@@ -103,6 +104,7 @@ public class ThirdPersonController : MonoBehaviour
     public AnimationClip runAnimation;
     public AnimationClip jumpPoseAnimation;	
         */
+			/*
         if (!idleAnimation)
         {
             _animation = null;
@@ -394,8 +396,8 @@ public class ThirdPersonController : MonoBehaviour
                 SendMessage("DidLand", SendMessageOptions.DontRequireReceiver);
             }
         }
-
         lastPos = transform.position;
+			*/
     }
 
     void OnControllerColliderHit(ControllerColliderHit hit)

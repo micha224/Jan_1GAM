@@ -36,8 +36,11 @@ public class NetworkMovement : Photon.MonoBehaviour {
         if (stream.isWriting)
         {
             //We own this player: send the others our data
+			ControllerPlayer controllerScript = GetComponent<ControllerPlayer>();
+			stream.SendNext((int)controllerScript._characterState);
             stream.SendNext(transform.position);
             stream.SendNext(transform.rotation);
+			
 			
 			Stats statsScript = GetComponent<Stats>();
 			stream.SendNext(statsScript.Health);
@@ -49,7 +52,9 @@ public class NetworkMovement : Photon.MonoBehaviour {
             this.correctPlayerPos = (Vector3)stream.ReceiveNext();
             this.correctPlayerRot = (Quaternion)stream.ReceiveNext();
 			
+			ControllerPlayer controllerScript = GetComponent<ControllerPlayer>();
 			Stats statsScript = GetComponent<Stats>();
+			controllerScript._characterState = (CharacterState)(int)stream.ReceiveNext();
 			statsScript.Health = (int)stream.ReceiveNext();
 			statsScript.Lives = (int)stream.ReceiveNext();
         }
