@@ -563,6 +563,13 @@ namespace UIDE.Plugins.AutoComplete {
 				if (visible && isBackspace && !isDotOrWord) {
 					HideBox();
 				}
+				//For performance on OSX.
+				if (Application.platform == RuntimePlatform.OSXEditor) {
+					if (visible && isBackspace) {
+						HideBox();
+						visible = false;
+					}
+				}
 				if (visible && autoCompleteKey != "") {
 					TryStartUpdateAutoCompleteList(isChain);
 				}
